@@ -1,0 +1,142 @@
+<mxStylesheet>
+	<include name="/edu/incense/designer/resources/basic-style.xml"/>
+	<add as="defaultVertex" extend="defaultVertex">
+		<add as="fillColor" value="#ffffff"/>
+		<add as="strokeWidth" value="2"/>
+		<add as="strokeColor" value="#000000"/>
+		<add as="fontSize" value="24"/>
+		<add as="fontColor" value="black"/>
+		<add as="fontFamily" value="Verdana"/>
+	</add>
+	<add as="defaultEdge" extend="defaultEdge">
+		<add as="labelBackgroundColor" value="white"/>
+		<add as="rounded" value="1"/>
+		<add as="edgeStyle" value="none"/>
+		<add as="strokeColor" value="#5d65df"/>
+		<add as="fontSize" value="11"/>
+		<add as="fontColor" value="#1d258f"/>
+		<add as="fontFamily" value="Verdana"/>
+        <add as="strokeWidth" value="2"/>        
+	</add>
+	<add as="label">
+		<add as="shape" value="label"/>
+		<add as="perimeter" value="rectanglePerimeter"/>
+		<add as="fontStyle" value="1"/>
+		<add as="align" value="left"/>
+		<add as="verticalAlign" value="middle"/>
+		<add as="spacing" value="2"/>
+		<add as="spacingLeft" value="40"/>
+		<add as="imageWidth" value="32"/>
+		<add as="imageHeight" value="32"/>
+		<add as="rounded" value="1"/>
+		<add as="shadow" value="1"/>
+		<add as="glass" value="1"/>
+	</add>
+	<add as="icon" extend="label">
+		<add as="align" value="center"/>
+		<add as="imageAlign" value="center"/>
+		<add as="verticalLabelPosition" value="bottom"/>
+		<add as="verticalAlign" value="top"/>
+		<add as="spacingTop" value="4"/>
+		<add as="labelBackgroundColor" value="#FFFFFF"/>
+		<add as="spacing" value="0"/>
+		<add as="spacingLeft" value="0"/>
+		<add as="spacingTop" value="6"/>
+		<add as="fontStyle" value="0"/>
+		<add as="imageWidth" value="48"/>
+		<add as="imageHeight" value="48"/>
+	</add>
+	<add as="entity">
+		<add as="edgeStyle" value="entityRelationEdgeStyle"/>
+	</add>
+	<add as="vertical">
+		<add as="elbow" value="vertical"/>
+	</add>
+	<add as="straight">
+		<add as="shape" value="connector"/>
+		<add as="endArrow" value="classic"/>
+		<add as="edgeStyle" value="none"/>
+	</add>
+	<add as="arrow">
+		<add as="shape" value="arrow"/>
+    </add>
+	<add as="rectangle" extend="defaultVertex">
+		<add as="verticalLabelPosition" value="bottom"/>
+        <add as="verticalAlign" value="top"/>
+	</add>
+	<add as="group">
+		<add as="verticalAlign" value="top"/>
+		<add as="dashed" value="1"/>
+		<add as="opacity" value="50"/>
+	</add>
+	<add as="ellipse">
+		<add as="shape" value="ellipse"/>
+		<add as="perimeter" value="ellipsePerimeter"/>
+	</add>
+	<add as="rhombus">
+		<add as="shape" value="rhombus"/>
+		<add as="perimeter" value="rhombusPerimeter"/>
+        <add as="fontFamily" value="Helvetica"/>
+        <add as="fontStyle" value="1"/>
+	</add>
+	<add as="rhombusAcc" extend="rhombus">
+        <add as="fillColor" value="#0084ff"/>
+        <add as="fontColor" value="#b0daff"/>
+	</add>
+	<add as="rhombusAudio" extend="rhombus">
+        <add as="fillColor" value="#00A35A"/>
+        <add as="fontColor" value="#ffffff"/>
+	</add>
+	<add as="rhombusBluetooth" extend="rhombus">
+        <add as="fillColor" value="#295391"/>
+        <add as="fontColor" value="#ffffff"/>
+	</add>
+	<add as="rhombusGps" extend="rhombus">
+		<add as="fillColor" value="#ff7c00"/>
+        <add as="fontColor" value="#ffe08a"/>
+	</add>
+	<add as="rhombusGyro" extend="rhombus">
+        <add as="fillColor" value="#6E0000"/>
+        <add as="fontColor" value="#ffffff"/>
+	</add>
+	<add as="rhombusWifi" extend="rhombus">
+        <add as="fillColor" value="#6442C8"/>
+        <add as="fontColor" value="#BFA6FF"/>
+	</add>
+	<add as="rhombusStates" extend="rhombus">
+        <add as="fillColor" value="#ADADAD"/>
+        <add as="fontColor" value="#000000"/>
+	</add>
+	<add as="rhombusCalls" extend="rhombus">
+        <add as="fillColor" value="#2E2E2E"/>
+        <add as="fontColor" value="#FFFFFF"/>
+	</add>
+	<add as="rhombusExtra" extend="rhombus">
+        <add as="fillColor" value="#019F07"/>
+        <add as="fontColor" value="#AAFFAA"/>
+	</add>
+	<add as="triangle">
+		<add as="shape" value="triangle"/>
+		<add as="perimeter" value="trianglePerimeter"/>
+		<add as="align" value="left"/>
+	</add>
+	<add as="line">
+		<add as="shape" value="line"/>
+		<add as="strokeWidth" value="4"/>
+		<add as="labelBackgroundColor" value="white"/>
+		<add as="verticalAlign" value="top"/>
+		<add as="spacingTop" value="8"/>
+	</add>
+	<add as="image">
+		<add as="shape" value="image"/>
+		<add as="labelBackgroundColor" value="white"/>
+		<add as="verticalLabelPosition" value="bottom"/>
+		<add as="verticalAlign" value="top"/>
+	</add>
+	<add as="roundImage" extend="image">
+		<add as="perimeter" value="ellipsePerimeter"/>
+	</add>
+	<add as="rhombusImage" extend="image">
+		<add as="perimeter" value="rhombusPerimeter"/>
+	</add>
+</mxStylesheet>
