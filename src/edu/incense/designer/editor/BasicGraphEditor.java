@@ -1,6 +1,7 @@
 package edu.incense.designer.editor;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -19,6 +21,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -27,10 +30,13 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import org.jdesktop.swingx.JXTaskPane;
+import org.jdesktop.swingx.JXTaskPaneContainer;
 
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxCompactTreeLayout;
@@ -82,7 +88,10 @@ public class BasicGraphEditor extends JPanel {
     protected mxGraphComponent graphComponent;
     protected mxGraphOutline graphOutline;
     protected PropertiesPanel properties;
-    protected JTabbedPane libraryPane;
+//    protected JTabbedPane libraryPane;
+//    protected JPanel libraryPane;
+    protected JXTaskPaneContainer libraryPane;
+    protected JScrollPane libraryScrollPane;
     protected mxUndoManager undoManager;
     protected String appTitle;
     protected JLabel statusBar;
@@ -151,12 +160,22 @@ public class BasicGraphEditor extends JPanel {
         properties = new PropertiesPanel(new Task(TaskType.Session));
 
         // Creates the library pane that contains the tabs with the palettes
-        libraryPane = new JTabbedPane();
+//        libraryPane = new JTabbedPane();
+        libraryPane = new JXTaskPaneContainer();
+//        libraryPane.setAutoscrolls(true);
+        
+        
+        
+        libraryScrollPane = new JScrollPane(libraryPane);
+        libraryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+//        libraryPane.setLayout(new BoxLayout(libraryPane, BoxLayout.Y_AXIS));
+//        libraryPane.setLayout(new GridLayout(0,1));
 
         // Creates the inner split pane that contains the library with the
         // palettes and the graph outline on the left side of the window
         JSplitPane inner = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                libraryPane, new JScrollPane(properties));
+                libraryScrollPane, new JScrollPane(properties));
         inner.setDividerLocation(360);
         inner.setResizeWeight(1);
         inner.setDividerSize(6);
@@ -167,7 +186,7 @@ public class BasicGraphEditor extends JPanel {
         JSplitPane outer = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, inner,
                 graphComponent);
         outer.setOneTouchExpandable(true);
-        outer.setDividerLocation(220);
+        outer.setDividerLocation(230);
         outer.setDividerSize(6);
         outer.setBorder(null);
 
@@ -250,20 +269,29 @@ public class BasicGraphEditor extends JPanel {
 	 * 
 	 */
     public EditorPalette insertPalette(String title) {
-        final EditorPalette palette = new EditorPalette(properties);
-        final JScrollPane scrollPane = new JScrollPane(palette);
-        scrollPane
-                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane
-                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        libraryPane.add(title, scrollPane);
-
+        final EditorPalette palette = new EditorPalette(title, properties);
+        
+//        final JScrollPane scrollPane = new JScrollPane(palette);
+//        scrollPane
+//                .setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        scrollPane
+//                .setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//        libraryPane.add(title, scrollPane);
+        
+        final JXTaskPane taskPane = new JXTaskPane();
+        taskPane.setTitle(title);
+        taskPane.setScrollOnExpand(true);
+        taskPane.add(palette);
+        
+        libraryPane.add(title, taskPane);
+        
         // Updates the widths of the palettes if the container size changes
         libraryPane.addComponentListener(new ComponentAdapter() {
 
             public void componentResized(ComponentEvent e) {
-                int w = scrollPane.getWidth()
-                        - scrollPane.getVerticalScrollBar().getWidth();
+                int w = taskPane.getContentPane().getWidth() - taskPane.getContentPane().getInsets().left - taskPane.getContentPane().getInsets().right;
+//                int w = libraryScrollPane.getWidth()
+//                - libraryScrollPane.getVerticalScrollBar().getWidth();
                 palette.setPreferredWidth(w);
             }
 
@@ -517,7 +545,7 @@ public class BasicGraphEditor extends JPanel {
     /**
 	 * 
 	 */
-    public JTabbedPane getLibraryPane() {
+    public /*JTabbedPane*/ JPanel getLibraryPane() {
         return libraryPane;
     }
 

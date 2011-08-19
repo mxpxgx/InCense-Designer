@@ -1574,8 +1574,8 @@ public class EditorActions
 
 							JComponent scrollPane = (JComponent) palette
 									.getParent().getParent();
-							editor.getLibraryPane().setSelectedComponent(
-									scrollPane);
+//							editor.getLibraryPane().setSelectedComponent(
+//									scrollPane);
 
 							// FIXME: Need to update the size of the palette to force a layout
 							// update. Re/in/validate of palette or parent does not work.

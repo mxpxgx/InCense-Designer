@@ -101,7 +101,7 @@ public class GraphEditor extends BasicGraphEditor {
         });
 
         /* COMPONENTS */
-        Task task = new Task(TaskType.Session, "New session");
+        Task task = new Task(TaskType.Session, "Session");
         task.putExtra("sessionType", "User");
 
         componentsPalette
@@ -286,6 +286,7 @@ public class GraphEditor extends BasicGraphEditor {
                         "rhombusGyro", 160, 160, task);
 
         task = new Task(TaskType.Sensor, mxResources.get("sensorWifi"));
+        task.setDescription("Scans for access points available in the subject\'s location.");
         task.putOutput("address", DataType.TEXT.toString(), "The address of the access point (bssid).", "<i>e.g.</i> \"02:00:01:02:03:04\"");
         task.putOutput("name", DataType.TEXT.toString(), "The network name (ssid)", "<i>e.g.</i> \"myNetwork\"");
         task.putOutput("capabilities", DataType.TEXT.toString(), "Describes the authentication, key management, and encryption schemes supported by the access point.", "<i>e.g.</i> N/A");

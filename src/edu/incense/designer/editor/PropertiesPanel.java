@@ -32,7 +32,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
      */
     private static final long serialVersionUID = 2835920409856391701L;
 
-    private JLabel titleLabel, typeLabel, outputsLabel;
+    private JLabel titleLabel, nameLabel, typeLabel, outputsLabel;
     private JLabel descriptionArea;
     private boolean instantiated = false;
     private GroupLayout layout;
@@ -40,7 +40,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
     private GroupLayout.Group vGroup;
 
     public PropertiesPanel(Task task) {
-        setBackground(Color.WHITE);
+        setBackground(new Color(245,245,245));
         setTask(task);
         instantiated = true;
     }
@@ -58,6 +58,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
         vGroup = layout.createSequentialGroup();
 
         setTitle();
+        setNameProperty(task.getName());
         setType(task.getTaskType());
         setDescription(task.getDescription());
         setOutputs(task.getOutputs());
@@ -75,6 +76,16 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
 
         hGroup.addComponent(titleLabel);
         vGroup.addComponent(titleLabel);
+    }
+    
+    private void setNameProperty(String name) {
+        if (nameLabel == null) {
+            nameLabel = new JLabel();
+        }
+        nameLabel.setText("<html><b>Name:</b> " + name + "</html>");
+
+        hGroup.addComponent(nameLabel);
+        vGroup.addComponent(nameLabel);
     }
 
     private void setType(TaskType type) {

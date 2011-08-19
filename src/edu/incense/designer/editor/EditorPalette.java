@@ -16,12 +16,15 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
+import javax.swing.border.EmptyBorder;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
@@ -43,12 +46,15 @@ public class EditorPalette extends JPanel {
     private static final long serialVersionUID = 7771113885935187066L;
     protected JLabel selectedEntry = null;
     protected mxEventSource eventSource = new mxEventSource(this);
-    protected Color gradientColor = new Color(250, 250, 250);
+    protected Color gradientColor = new Color(245, 245, 245);
     protected PaletteSelectionListener selectionListener;
+    private int itemMaxWidth=0, itemMaxHeight=0;
 
     @SuppressWarnings("serial")
-    public EditorPalette() {
-        setBackground(new Color(255, 255, 255));
+    public EditorPalette(String title) {
+        // super();
+        setBorder(new EmptyBorder(0, 0, 0, 0));
+        setBackground(new Color(245, 245, 245));
         setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
         // Clears the current selection when the background is clicked
@@ -80,8 +86,9 @@ public class EditorPalette extends JPanel {
         });
     }
 
-    public EditorPalette(PaletteSelectionListener selectionListener) {
-        this();
+    public EditorPalette(String title,
+            PaletteSelectionListener selectionListener) {
+        this(title);
         this.selectionListener = selectionListener;
     }
 
@@ -159,9 +166,10 @@ public class EditorPalette extends JPanel {
 	 * 
 	 */
     public void setPreferredWidth(int width) {
-        int cols = Math.max(1, width / 55);
-        setPreferredSize(new Dimension(width,
-                (getComponentCount() * 55 / cols) + 30));
+        float cols = Math.max(1, (width) / 55f);
+        int rows = (int)Math.ceil(getComponentCount() / cols);
+        int height = Math.max(55,  rows * 55);
+        setPreferredSize(new Dimension(width, height));
         revalidate();
     }
 
@@ -239,6 +247,14 @@ public class EditorPalette extends JPanel {
 
         entry.setToolTipText(name);
         entry.setText(name);
+        
+        if(entry.getWidth() > itemMaxWidth){
+            itemMaxWidth = entry.getWidth();
+        }
+        
+        if(entry.getHeight() > itemMaxHeight){
+            itemMaxHeight = entry.getHeight();
+        }
 
         entry.addMouseListener(new MouseListener() {
 
