@@ -95,9 +95,9 @@ public class ProjectBuilder {
         int units = task.getExtra(SessionEditorPanel.ATT_DURATION_UNITS, 0);
         String measure = task.getExtra(SessionEditorPanel.ATT_DURATION_MEASURE, "minutes");
         if(measure.compareTo("minutes") == 0){
-            duration = units * 1000 * 60; //milliseconds
+            duration = units * 1000L * 60; //milliseconds
         } else if(measure.compareTo("hours") == 0){
-            duration = units * 1000 * 60 * 60; //milliseconds
+            duration = units * 1000L * 60 * 60; //milliseconds
         }
         session.setDuration(duration);
         

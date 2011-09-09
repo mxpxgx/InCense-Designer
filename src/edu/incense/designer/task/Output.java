@@ -15,6 +15,7 @@ public class Output implements Serializable {
     private String type;
     private String description;
     private String example;
+    private String[] types;
     
     public Output(String name, String type){
         setName(name);
@@ -72,5 +73,19 @@ public class Output implements Serializable {
     
     public String toString(){
         return type;
+    }
+
+    /**
+     * @param types the types to set
+     */
+    public void setTypes(String[] types) {
+        this.types = types;
+    }
+
+    /**
+     * @return the types
+     */
+    public String[] getTypes() {
+        return types;
     }
 }

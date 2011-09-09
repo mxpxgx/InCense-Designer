@@ -37,7 +37,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JColorChooser;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -1225,7 +1224,7 @@ public class EditorActions
 				}
 				catch (Exception e)
 				{
-					// ignore
+				    System.err.println("EditorActions: TogglePropertyItem: "+e);
 				}
 			}
 		}
@@ -1271,7 +1270,7 @@ public class EditorActions
 				}
 				catch (Exception e)
 				{
-					// ignore
+					System.err.println("EditorActions: TogglePropertyItem: "+e);
 				}
 			}
 		}
@@ -1572,8 +1571,8 @@ public class EditorActions
 										+ File.separator);
 							}
 
-							JComponent scrollPane = (JComponent) palette
-									.getParent().getParent();
+//							JComponent scrollPane = (JComponent) palette
+//									.getParent().getParent();
 //							editor.getLibraryPane().setSelectedComponent(
 //									scrollPane);
 

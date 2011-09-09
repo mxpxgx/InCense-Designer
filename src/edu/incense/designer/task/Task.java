@@ -77,10 +77,9 @@ public class Task implements Serializable {
         String prefix = "";
         switch(getTaskType()){
         case Survey:
-            //prefix = "Su:";
-            break;
+            return name;
         case Trigger:
-            return "  T";
+            return name;
         case Sink:
             return "Si";
         case Session:
@@ -133,11 +132,10 @@ public class Task implements Serializable {
     }
     
     public String getExtra(String key, String defValue) {
-        String value = extras.get(key);
-        if (extras == null || value == null) {
+        if (extras == null || !extras.containsKey(key)) {
             return defValue;
         }
-        return value;
+        return extras.get(key);
     }
 
     public boolean getExtra(String key, boolean defValue) {

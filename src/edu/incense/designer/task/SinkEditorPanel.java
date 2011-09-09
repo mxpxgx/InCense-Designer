@@ -43,9 +43,9 @@ import edu.incense.designer.task.trigger.ConditionPanel.DataType;
  */
 public class SinkEditorPanel extends TaskEditorPanel {
     private static final long serialVersionUID = -7235791171081830109L;
-    private static final int MAX_LIST_WIDTH = 250;
-    private static final int MAX_ITEM_HEIGHT = 30;
-    private static final int MAX_ROWS = 6;
+//    private static final int MAX_LIST_WIDTH = 250;
+//    private static final int MAX_ITEM_HEIGHT = 30;
+//    private static final int MAX_ROWS = 6;
     private mxGraph graph;
     // private mxCell cell;
     private static final String[] FILE_FORMATS = { "JSON", "XML", "CVS" };

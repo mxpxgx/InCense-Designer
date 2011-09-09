@@ -134,6 +134,7 @@ public class GraphEditor extends BasicGraphEditor {
                         80, 80, task);
 
         task = new Task(TaskType.Sink, "Sink");
+        task.setDescription("Sinks are pools where the obtained data is collected and also where the relevant information of a session or survey is grouped before being sent to a context database");
 
         componentsPalette
                 .addTemplate(
@@ -152,6 +153,17 @@ public class GraphEditor extends BasicGraphEditor {
                         new ImageIcon(
                                 GraphEditor.class
                                         .getResource("/edu/incense/designer/images/triangle.png")),
+                        "triangle", 120, 120, task);
+        
+        task = new Task(TaskType.Trigger, "RandomTrigger");
+        task.setDescription("RandomTriggers can start sessions or surveys at random times.");
+        
+        componentsPalette
+        .addTemplate(
+                "RandomTrigger",
+                new ImageIcon(
+                        GraphEditor.class
+                        .getResource("/edu/incense/designer/images/triangle.png")),
                         "triangle", 120, 120, task);
 
         // task = new Task(TaskType.Sensor, "Sensor");
@@ -174,12 +186,15 @@ public class GraphEditor extends BasicGraphEditor {
 
         /* FILTERS */
 
-        task = new Task(TaskType.HomeLocationFilter, "Home Location");
-        task.putOutput("isHome", DataType.BOOLEAN.toString(), "Indicates if the user is at home or not", "<i>i.e.</i> \"true\" or \"false\"");
+        task = new Task(TaskType.LocationFilter, "Location");
+        task.putOutput("inLocation", DataType.BOOLEAN.toString(), "Indicates if the user is at a location or not", "<i>i.e.</i> \"true\" or \"false\"");
+        task.putOutput("altitude", DataType.NUMERIC.toString(), "Altitude of the fix", "<i>e.g.</i> \"31.873254\"");
+        task.putOutput("latitude", DataType.NUMERIC.toString(), "Latitude of the fix", "<i>e.g.</i> \"-116.633913\"");
+        task.putOutput("longitude", DataType.NUMERIC.toString(), "Longiturde of the fix", "<i>e.g.</i> \"12.406\"");
 
         filtersPalette
                 .addTemplate(
-                        "Home Location",
+                        "Location",
                         new ImageIcon(
                                 GraphEditor.class
                                         .getResource("/edu/incense/designer/images/rectangle.png")),
@@ -198,8 +213,9 @@ public class GraphEditor extends BasicGraphEditor {
                         "rectangle", 120, 100, task);
 
         task = new Task(TaskType.TransportationModeFilter, "Transportation Mode");
-        task.putOutput("transportationMode", DataType.TEXT.toString(), "Tells the transportation mode infered", "<i>e.g.</i> \"car\", \"bus\", \"walking\"");
-
+        task.putOutput("transportationMode", DataType.TYPE.toString(), "Tells the transportation mode infered", "<i>e.g.</i> \"car\", \"walking\"");
+        task.getOutput("transportationMode").setTypes(new String[]{"walking", "in car"});
+        
         filtersPalette
                 .addTemplate(
                         "Transportation Mode",
@@ -244,6 +260,17 @@ public class GraphEditor extends BasicGraphEditor {
                                 GraphEditor.class
                                         .getResource("/edu/incense/designer/images/rhombus_audio.png")),
                         "rhombusAudio", 160, 160, task);
+        
+        task = new Task(TaskType.Sensor, mxResources.get("sensorBattery"));
+        task.putOutput("batteryLevel", DataType.NUMERIC.toString(), "The level of the battery.", "Type: integer values from 0 to 100");
+
+        sensorsPalette
+                .addTemplate(
+                        mxResources.get("sensorBattery"),
+                        new ImageIcon(
+                                GraphEditor.class
+                                        .getResource("/edu/incense/designer/images/rhombus_gyro.png")),
+                        "rhombusGyro", 160, 160, task);
 
         task = new Task(TaskType.Sensor, mxResources.get("sensorBluetooth"));
         task.putOutput("address", DataType.TEXT.toString(), "Hardware address", "<i>e.g.</i> \"00:11:22:AA:BB:CC\"");
@@ -275,15 +302,6 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_gps.png")),
                         "rhombusGps", 140, 140, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorGyro"));
-
-        sensorsPalette
-                .addTemplate(
-                        mxResources.get("sensorGyro"),
-                        new ImageIcon(
-                                GraphEditor.class
-                                        .getResource("/edu/incense/designer/images/rhombus_gyro.png")),
-                        "rhombusGyro", 160, 160, task);
 
         task = new Task(TaskType.Sensor, mxResources.get("sensorWifi"));
         task.setDescription("Scans for access points available in the subject\'s location.");
@@ -291,7 +309,7 @@ public class GraphEditor extends BasicGraphEditor {
         task.putOutput("name", DataType.TEXT.toString(), "The network name (ssid)", "<i>e.g.</i> \"myNetwork\"");
         task.putOutput("capabilities", DataType.TEXT.toString(), "Describes the authentication, key management, and encryption schemes supported by the access point.", "<i>e.g.</i> N/A");
         task.putOutput("frequency", DataType.NUMERIC.toString(), "The frequency in MHz of the channel over which the client is communicating with the access point.", "<i>e.g.</i> \"1200\" Mhz");
-        task.putOutput("level", DataType.NUMERIC.toString(), "The detected signal level in dBm.", "<i>e.g.</i> \"23\" dBm");
+        task.putOutput("strengthLevel", DataType.NUMERIC.toString(), "The detected signal level in dBm.", "<i>e.g.</i> \"23\" dBm");
 
         sensorsPalette
                 .addTemplate(
@@ -325,14 +343,15 @@ public class GraphEditor extends BasicGraphEditor {
 
         /* SURVEYS */
 
-        task = new Task(TaskType.Survey, "Wandering Mind");
+        task = new Task(TaskType.Survey, "WM");
+        task.setDescription("Survey to find out how often people\'s minds wander, what topics they wander to, and how those wanderings affect their happiness.");
         Survey survey = getTestSurvey();
         task.putExtra("survey", survey.toJsonString());
         task.putOutput("answers", DataType.TEXT.toString(), "Answers from a survey", "Type: JSON content");
 
         surveysPalette
                 .addTemplate(
-                        "Wandering",
+                        "WanderingMind",
                         new ImageIcon(
                                 GraphEditor.class
                                         .getResource("/edu/incense/designer/images/rounded.png")),

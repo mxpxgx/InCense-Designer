@@ -16,8 +16,6 @@ import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;

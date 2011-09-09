@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -75,7 +76,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
         titleLabel.setFont(new Font("Properties Title", Font.BOLD, 14));
 
         hGroup.addComponent(titleLabel);
-        vGroup.addComponent(titleLabel);
+        vGroup.addComponent(titleLabel).addGap(15);
     }
     
     private void setNameProperty(String name) {
@@ -85,7 +86,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
         nameLabel.setText("<html><b>Name:</b> " + name + "</html>");
 
         hGroup.addComponent(nameLabel);
-        vGroup.addComponent(nameLabel);
+        vGroup.addComponent(nameLabel).addGap(10);
     }
 
     private void setType(TaskType type) {
@@ -95,7 +96,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
         typeLabel.setText("<html><b>Type:</b> " + type + "</html>");
 
         hGroup.addComponent(typeLabel);
-        vGroup.addComponent(typeLabel);
+        vGroup.addComponent(typeLabel).addGap(10);
     }
 
     private void setDescription(String description) {
@@ -119,7 +120,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
                     + "</p></html>");
 
             hGroup.addComponent(descriptionArea);
-            vGroup.addComponent(descriptionArea);
+            vGroup.addComponent(descriptionArea).addGap(10);
         }
     }
 
@@ -135,12 +136,12 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
             GroupLayout.Group vOutput;
             GroupLayout.Group hOutputLeft = layout.createParallelGroup();
             GroupLayout.Group hOutputRight = layout.createParallelGroup();
-            for (String field : outputs.keySet()) {
+            for (Entry<String, Output> entry : outputs.entrySet()) {
                 vOutput = layout.createParallelGroup();
 
-                fieldLabel = new JLabel("  " + field + ": ");
-                fieldLabel.setToolTipText("<html><p>"+outputs.get(field).getDescription() + "</p><p>" + outputs.get(field).getExample()+"</p></html>");
-                valueLabel = new JLabel(outputs.get(field).getType());
+                fieldLabel = new JLabel("  " + entry.getKey() + ": ");
+                fieldLabel.setToolTipText("<html><p>"+entry.getValue().getDescription() + "</p><p>" + entry.getValue().getExample()+"</p></html>");
+                valueLabel = new JLabel(entry.getValue().getType());
                 valueLabel.setToolTipText(fieldLabel.getToolTipText());
 
                 vOutput.addComponent(fieldLabel).addComponent(valueLabel);

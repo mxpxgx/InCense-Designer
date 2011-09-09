@@ -1,7 +1,6 @@
 package edu.incense.designer.editor;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +8,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -21,7 +19,6 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -33,7 +30,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
@@ -81,7 +77,7 @@ public class BasicGraphEditor extends JPanel {
         try {
             mxResources.add("edu/incense/designer/resources/editor");
         } catch (Exception e) {
-            // ignore
+            System.err.println("BasicGraphEditor: Loading resources: "+e);
         }
     }
 

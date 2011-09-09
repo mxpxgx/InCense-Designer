@@ -4,7 +4,7 @@
 		<add as="fillColor" value="#ffffff"/>
 		<add as="strokeWidth" value="2"/>
 		<add as="strokeColor" value="#000000"/>
-		<add as="fontSize" value="24"/>
+		<add as="fontSize" value="20"/>
 		<add as="fontColor" value="black"/>
 		<add as="fontFamily" value="Verdana"/>
 	</add>
@@ -118,7 +118,8 @@
 	<add as="triangle">
 		<add as="shape" value="triangle"/>
 		<add as="perimeter" value="trianglePerimeter"/>
-		<add as="align" value="left"/>
+        <add as="verticalLabelPosition" value="bottom"/>
+        <add as="verticalAlign" value="top"/>
 	</add>
 	<add as="line">
 		<add as="shape" value="line"/>

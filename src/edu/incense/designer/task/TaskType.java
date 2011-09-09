@@ -17,6 +17,7 @@ public enum TaskType {
     StepsFilter,
     TransportationModeFilter,
     HomeLocationFilter,
+    LocationFilter,
     CustomizableFilter,
     Survey,
     Trigger,

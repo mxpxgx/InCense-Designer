@@ -4,7 +4,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.GroupLayout;
@@ -20,9 +19,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.util.mxResources;
@@ -30,7 +26,6 @@ import com.mxgraph.view.mxGraph;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
 
-import edu.incense.designer.task.Output;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskCellEditor;
 import edu.incense.designer.task.TaskEditorPanel;
@@ -54,8 +49,8 @@ public class SessionEditorPanel extends TaskEditorPanel {
     public static final String ATT_REPEAT_UNITS = "repeatUnits";
     public static final String ATT_REPEAT_MEASURE = "repeatMeasure";
     public static final String ATT_END = "endDate";
-    private mxGraph graph;
-    private String matches;
+//    private mxGraph graph;
+//    private String matches;
     private JComboBox typeBox;
     private JCheckBox noticesCheckBox;
     private JDateChooser startChooser;
@@ -69,8 +64,8 @@ public class SessionEditorPanel extends TaskEditorPanel {
     public SessionEditorPanel(Window windowContainer, Task task,
             TaskCellEditor editor, mxGraph graph, mxICell cell) {
         super(windowContainer, task, editor);
-        this.graph = graph;
-        matches = "all";
+//        this.graph = graph;
+//        matches = "all";
         // this.cell = (mxCell)cell;
         addComponents(task, (mxCell) cell);
     }
@@ -331,29 +326,29 @@ public class SessionEditorPanel extends TaskEditorPanel {
         layout.setHorizontalGroup(hGroup);
     }
 
-    private Map<String, Output> getDataAvailableFor(mxICell cell) {
-        Map<String, Output> data = new HashMap<String, Output>();
-
-        Object[] edges = graph.getIncomingEdges(cell);
-        if (edges == null) {
-            return data;
-        }
-        mxCell source;
-        Task task;
-        for (int i = 0; i < edges.length; i++) {
-            source = (mxCell) ((mxCell) edges[i]).getSource();
-            task = (Task) source.getValue();
-            data.putAll(task.getOutputs());
-            data.putAll(getDataAvailableFor(source));
-        }
-        return data;
-    }
+//    private Map<String, Output> getDataAvailableFor(mxICell cell) {
+//        Map<String, Output> data = new HashMap<String, Output>();
+//
+//        Object[] edges = graph.getIncomingEdges(cell);
+//        if (edges == null) {
+//            return data;
+//        }
+//        mxCell source;
+//        Task task;
+//        for (int i = 0; i < edges.length; i++) {
+//            source = (mxCell) ((mxCell) edges[i]).getSource();
+//            task = (Task) source.getValue();
+//            data.putAll(task.getOutputs());
+//            data.putAll(getDataAvailableFor(source));
+//        }
+//        return data;
+//    }
 
     private void saveTrigger(Task task, String name) {
         task.setName(name);
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.createObjectNode();
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode jsonNode = mapper.createObjectNode();
 
         // Save new task
         editor.saveNewTask(task);

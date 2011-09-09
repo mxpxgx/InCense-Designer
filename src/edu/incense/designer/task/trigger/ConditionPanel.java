@@ -6,16 +6,12 @@ package edu.incense.designer.task.trigger;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -32,7 +28,7 @@ public class ConditionPanel extends JPanel {
     private static final int COMPONENT_HEIGHT   = 28;
 
     public enum DataType {
-        BOOLEAN, NUMERIC, TEXT, DATE, DATA
+        BOOLEAN, NUMERIC, TEXT, DATE, DATA, TYPE
     }
 
     private static final String[] booleanOperators = { "is true", "is false" };
@@ -52,7 +48,7 @@ public class ConditionPanel extends JPanel {
     private JLabel toLabel;
     private JTextField valueField2;
     private JComboBox dateComboBox;
-    private JButton removeButton;
+//    private JButton removeButton;
     private boolean changing;
 
     public ConditionPanel(Map<String, Output> data) {
@@ -93,14 +89,15 @@ public class ConditionPanel extends JPanel {
         dataComboBox = new JComboBox(data.keySet().toArray());
         // dataComboBox.setPreferredSize(new Dimension(COMPONENT_WIDTH,
         // COMPONENT_HEIGHT));
-        DataType selectedType = DataType.valueOf(data.get(dataComboBox
-                .getSelectedItem().toString()).getType());
+        Output output = data.get(dataComboBox
+                .getSelectedItem().toString());
+        DataType selectedType = DataType.valueOf(output.getType());
         dataComboBox.addItemListener(new ItemListener() {
 
             @Override
             public void itemStateChanged(ItemEvent ie) {
                 String type = data.get((String) ie.getItem()).getType();
-                changeType(DataType.valueOf(type));
+                changeType(DataType.valueOf(type), data.get((String) ie.getItem()));
                 // changeOperator(selectedOperator);
                 // changeOperator(operatorComboBox.getSelectedIndex());
             }
@@ -147,8 +144,8 @@ public class ConditionPanel extends JPanel {
 
         // ImageIcon icon = new ImageIcon(
         // GraphEditor.class
-        // .getResource("/edu/incense/designer/images/remove-icon.png"));
-        // removeButton = new JButton(icon);
+//         .getResource("/edu/incense/designer/images/remove-icon.png"));
+//        removeButton = new JButton(icon);
         // removeButton.setBackground(Color.WHITE);
         // removeButton.setUI(new BasicButtonUI());
         // add(removeButton);
@@ -158,7 +155,7 @@ public class ConditionPanel extends JPanel {
             dataComboBox.setEnabled(false);
             operatorComboBox.setEnabled(false);
         } else {
-            changeType(selectedType);
+            changeType(selectedType, output);
             // changeOperator(selectedOperator);
         }
 
@@ -180,7 +177,7 @@ public class ConditionPanel extends JPanel {
 //        return null;
 //    }
 
-    private void changeType(DataType selectedType) {
+    private void changeType(DataType selectedType, Output output) {
         // Check if needs a change
         if (this.selectedType == selectedType) {
             return;
@@ -212,6 +209,9 @@ public class ConditionPanel extends JPanel {
         case DATE:
             addItems(operatorComboBox, dateOperators);
             flexiblePanel.add(valueField1);
+            break;
+        case TYPE:
+            addItems(operatorComboBox, output.getTypes());
             break;
         }
 
@@ -257,6 +257,8 @@ public class ConditionPanel extends JPanel {
                 flexiblePanel.remove(dateComboBox);
             }
             break;
+        case TYPE:
+            break;
         }
 
         this.selectedOperator = selectedOperator;
@@ -269,17 +271,17 @@ public class ConditionPanel extends JPanel {
         }
     }
 
-    public void addRemoveListener(final JList conditionsList) {
-        ActionListener removeListener = new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                conditionsList.remove(ConditionPanel.this);
-            }
-
-        };
-        removeButton.addActionListener(removeListener);
-    }
+//    public void addRemoveListener(final JList conditionsList) {
+//        ActionListener removeListener = new ActionListener() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                conditionsList.remove(ConditionPanel.this);
+//            }
+//
+//        };
+//        removeButton.addActionListener(removeListener);
+//    }
 
     public Condition getCondition() {
         Condition condition = new Condition();

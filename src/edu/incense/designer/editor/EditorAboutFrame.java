@@ -114,7 +114,7 @@ public class EditorAboutFrame extends JDialog
 		}
 		catch (Exception e)
 		{
-			// ignore
+			System.err.println("EditorAboutFrame: "+e);
 		}
 
 		getContentPane().add(content, BorderLayout.CENTER);
