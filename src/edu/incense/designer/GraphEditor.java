@@ -8,16 +8,21 @@ import java.awt.Color;
 import java.awt.Point;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import org.w3c.dom.Document;
 
+import com.mxgraph.io.mxCellCodec;
 import com.mxgraph.io.mxCodec;
+import com.mxgraph.io.mxCodecRegistry;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.swing.handler.mxKeyboardHandler;
+import com.mxgraph.swing.handler.mxRubberband;
 import com.mxgraph.swing.util.mxGraphTransferable;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxEvent;
@@ -26,6 +31,7 @@ import com.mxgraph.util.mxEventSource.mxIEventListener;
 import com.mxgraph.util.mxResources;
 import com.mxgraph.util.mxUtils;
 import com.mxgraph.view.mxGraph;
+import com.mxgraph.view.mxMultiplicity;
 
 import edu.incense.designer.editor.BasicGraphEditor;
 import edu.incense.designer.editor.EditorMenuBar;
@@ -74,6 +80,8 @@ public class GraphEditor extends BasicGraphEditor {
         EditorPalette filtersPalette = insertPalette(mxResources.get("filters"));
         EditorPalette sensorsPalette = insertPalette(mxResources.get("sensors"));
         EditorPalette surveysPalette = insertPalette(mxResources.get("surveys"));
+        
+        addValidation(graph);
 
         // Set straight line as default connector
         // mxGeometry geometry = new mxGeometry(0, 0, 120, 120);
@@ -101,7 +109,7 @@ public class GraphEditor extends BasicGraphEditor {
         });
 
         /* COMPONENTS */
-        Task task = new Task(TaskType.Session, "Session");
+        Task task = new Task(TaskType.Session.toString(), "Session");
         task.putExtra("sessionType", "User");
 
         componentsPalette
@@ -122,7 +130,7 @@ public class GraphEditor extends BasicGraphEditor {
         // .getResource("/edu/incense/designer/images/rectangle.png")),
         // null, 160, 120, task);
 
-        task = new Task(TaskType.Stop, "Stop");
+        task = new Task(TaskType.Stop.toString(), "Stop");
 
         componentsPalette
                 .addTemplate(
@@ -133,7 +141,7 @@ public class GraphEditor extends BasicGraphEditor {
                         "roundImage;image=/edu/incense/designer/images/cancel_end.png",
                         80, 80, task);
 
-        task = new Task(TaskType.Sink, "Sink");
+        task = new Task(TaskType.Sink.toString(), "Sink");
         task.setDescription("Sinks are pools where the obtained data is collected and also where the relevant information of a session or survey is grouped before being sent to a context database");
 
         componentsPalette
@@ -144,7 +152,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/doubleellipse.png")),
                         "ellipse;shape=doubleEllipse", 120, 120, task);
 
-        task = new Task(TaskType.Trigger, "Trigger");
+        task = new Task(TaskType.Trigger.toString(), "Trigger");
         task.setDescription("Triggers can receive raw data from sensors or other types of data coming from components as input. Triggers look for certain conditions in their inputs. When these conditions are met, they start programmed sessions or surveys.");
 
         componentsPalette
@@ -155,7 +163,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/triangle.png")),
                         "triangle", 120, 120, task);
         
-        task = new Task(TaskType.Trigger, "RandomTrigger");
+        task = new Task(TaskType.Trigger.toString(), "RandomTrigger");
         task.setDescription("RandomTriggers can start sessions or surveys at random times.");
         
         componentsPalette
@@ -186,7 +194,7 @@ public class GraphEditor extends BasicGraphEditor {
 
         /* FILTERS */
 
-        task = new Task(TaskType.LocationFilter, "Location");
+        task = new Task(TaskType.LocationFilter.toString(), "Location");
         task.putOutput("inLocation", DataType.BOOLEAN.toString(), "Indicates if the user is at a location or not", "<i>i.e.</i> \"true\" or \"false\"");
         task.putOutput("altitude", DataType.NUMERIC.toString(), "Altitude of the fix", "<i>e.g.</i> \"31.873254\"");
         task.putOutput("latitude", DataType.NUMERIC.toString(), "Latitude of the fix", "<i>e.g.</i> \"-116.633913\"");
@@ -200,7 +208,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rectangle.png")),
                         "rectangle", 120, 100, task);
 
-        task = new Task(TaskType.ShakeFilter, "Shake");
+        task = new Task(TaskType.ShakeFilter.toString(), "Shake");
         task.putOutput("isShake", DataType.BOOLEAN.toString(), "Indicates if a shake is detected", "<i>i.e.</i> \"true\" or \"false\"");
         task.putOutput("velocity", DataType.NUMERIC.toString(), "Velocity measured by accelerometers", "Type: integer value");
 
@@ -212,9 +220,9 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rectangle.png")),
                         "rectangle", 120, 100, task);
 
-        task = new Task(TaskType.TransportationModeFilter, "Transportation Mode");
+        task = new Task(TaskType.TransportationModeFilter.toString(), "Transportation Mode");
         task.putOutput("transportationMode", DataType.TYPE.toString(), "Tells the transportation mode infered", "<i>e.g.</i> \"car\", \"walking\"");
-        task.getOutput("transportationMode").setTypes(new String[]{"walking", "in car"});
+        task.obtainOutput("transportationMode").setTypes(new String[]{"walking", "in car"});
         
         filtersPalette
                 .addTemplate(
@@ -224,7 +232,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rectangle.png")),
                         "rectangle", 120, 100, task);
 
-        task = new Task(TaskType.StepsFilter, "Steps");
+        task = new Task(TaskType.StepsFilter.toString(), "Steps");
         task.putOutput("steps", DataType.NUMERIC.toString(), "number of steps infered", "Type: integer value");
 
         filtersPalette
@@ -236,7 +244,7 @@ public class GraphEditor extends BasicGraphEditor {
                         "rectangle", 120, 100, task);
 
         /* SENSORS */
-        task = new Task(TaskType.Sensor, mxResources.get("sensorAcc"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorAcc"));
         task.putOutput("xAxis", DataType.NUMERIC.toString(), "Value in axis X", "Type: float values from 0 to 1");
         task.putOutput("yAxis", DataType.NUMERIC.toString(), "Value in axis Y (float numbers from 0 to 1)", "Type: float values from 0 to 1");
         task.putOutput("zAxis", DataType.NUMERIC.toString(), "Value in axis Z (float numbers from 0 to 1)", "Type: float values from 0 to 1");
@@ -249,7 +257,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_acc.png")),
                         "rhombusAcc", 160, 160, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorAudio"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorAudio"));
         task.putExtra("sampleFrequency", "40");
         task.putOutput("audioFrame", DataType.DATA.toString(), "Frames in bytes", "<i>e.g.</i> N/A");
 
@@ -261,7 +269,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_audio.png")),
                         "rhombusAudio", 160, 160, task);
         
-        task = new Task(TaskType.Sensor, mxResources.get("sensorBattery"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorBattery"));
         task.putOutput("batteryLevel", DataType.NUMERIC.toString(), "The level of the battery.", "Type: integer values from 0 to 100");
 
         sensorsPalette
@@ -272,7 +280,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_gyro.png")),
                         "rhombusGyro", 160, 160, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorBluetooth"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorBluetooth"));
         task.putOutput("address", DataType.TEXT.toString(), "Hardware address", "<i>e.g.</i> \"00:11:22:AA:BB:CC\"");
         task.putOutput("state", DataType.NUMERIC.toString(), "The bond state of the remote device", "<i>e.g.</i> BOND_NONE (10), BOND_BONDING(11) or BOND_BONDED(12)");
         task.putOutput("name", DataType.TEXT.toString(), "The friendly Bluetooth name of the remote device", "e.g. \"MyBluetoothDevice\"");
@@ -287,7 +295,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_bluetooth.png")),
                         "rhombusBluetooth", 160, 160, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorGps"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorGps"));
         task.putOutput("altitude", DataType.NUMERIC.toString(), "Altitude of the fix", "<i>e.g.</i> \"31.873254\"");
         task.putOutput("latitude", DataType.NUMERIC.toString(), "Latitude of the fix", "<i>e.g.</i> \"-116.633913\"");
         task.putOutput("longitude", DataType.NUMERIC.toString(), "Longiturde of the fix", "<i>e.g.</i> \"12.406\"");
@@ -303,7 +311,7 @@ public class GraphEditor extends BasicGraphEditor {
                         "rhombusGps", 140, 140, task);
 
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorWifi"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorWifi"));
         task.setDescription("Scans for access points available in the subject\'s location.");
         task.putOutput("address", DataType.TEXT.toString(), "The address of the access point (bssid).", "<i>e.g.</i> \"02:00:01:02:03:04\"");
         task.putOutput("name", DataType.TEXT.toString(), "The network name (ssid)", "<i>e.g.</i> \"myNetwork\"");
@@ -319,7 +327,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_wifi.png")),
                         "rhombusWifi", 160, 160, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorCalls"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorCalls"));
         task.putOutput("phoneNumber", DataType.NUMERIC.toString(), "Called/caller phone number", "<i>e.g.</i> \"6461808080\"");
 
         sensorsPalette
@@ -330,7 +338,7 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rhombus_calls.png")),
                         "rhombusCalls", 160, 160, task);
 
-        task = new Task(TaskType.Sensor, mxResources.get("sensorStates"));
+        task = new Task(TaskType.Sensor.toString(), mxResources.get("sensorStates"));
         task.putOutput("phoneState", DataType.TEXT.toString(), "Phone current state", "<i>e.g.</i> \"charging\"");
 
         sensorsPalette
@@ -343,7 +351,7 @@ public class GraphEditor extends BasicGraphEditor {
 
         /* SURVEYS */
 
-        task = new Task(TaskType.Survey, "WM");
+        task = new Task(TaskType.Survey.toString(), "WM");
         task.setDescription("Survey to find out how often people\'s minds wander, what topics they wander to, and how those wanderings affect their happiness.");
         Survey survey = getTestSurvey();
         task.putExtra("survey", survey.toJsonString());
@@ -357,6 +365,85 @@ public class GraphEditor extends BasicGraphEditor {
                                         .getResource("/edu/incense/designer/images/rounded.png")),
                         "rounded=1", 160, 120, task);
 
+    }
+    
+    private void addValidation(mxGraph graph){
+        mxMultiplicity[] multiplicities = new mxMultiplicity[6];
+
+        //Trigger must start only triggerable tasks
+        multiplicities[0] = new mxMultiplicity(true, "Trigger", null, null, 1,
+              "n", Arrays.asList(new String[] { "Filter", "Sensor", "Session", "Sink", "Stop", "Survey", "Trigger" }),
+              "Trigger must connect to a valid task (filter, sensor, session, sink, stop, survey or trigger).",
+              "Trigger must connect to a valid task (filter, sensor, session, sink, stop, survey or trigger).", true);
+      
+        //Stop with no outputs
+        multiplicities[1] = new mxMultiplicity(true, "Stop", null, null, 0,
+              "0", null, "Stop must have no outputs.", null, true); // Type does not matter
+        
+       //Stop can only be started by a trigger
+        multiplicities[2] = new mxMultiplicity(false, "Stop", null, null, 1,
+              "n", Arrays.asList(new String[] { "Filter", "Sensor", "Session", "Sink", "Stop", "Survey" }),
+              "Stop can only be started by a trigger.",
+              "Stop can only be started by a trigger.", false);
+        
+        //Sensor can only be started by a trigger
+        multiplicities[3] = new mxMultiplicity(false, "Sensor", null, null, 0,
+              "n", Arrays.asList(new String[] { "Filter", "Sensor", "Session", "Sink", "Stop", "Survey" }),
+              "Sensor must not have inputs, it can only be started by a trigger.",
+              "Sensor must not have inputs, it can only be started by a trigger.", false);
+        
+        //Session can only be started by a trigger
+        multiplicities[4] = new mxMultiplicity(false, "Session", null, null, 1,
+              "n", Arrays.asList(new String[] { "Filter", "Sensor", "Session", "Sink", "Stop", "Survey" }),
+              "Session can only be started by a trigger.",
+              "Session can only be started by a trigger.", false);
+        
+      //Session with no outputs
+        multiplicities[5] = new mxMultiplicity(true, "Session", null, null, 0,
+              "0", null, "Session must have no outputs. A trigger inside a session could be used to start another one", null, true); // Type does not matter
+        
+        
+        
+        // Source nodes needs 1..2 connected Targets
+//        multiplicities[0] = new mxMultiplicity(true, "Source", null, null, 1,
+//                "2", Arrays.asList(new String[] { "Target" }),
+//                "Source Must Have 1 or 2 Targets",
+//                "Source Must Connect to Target", true);
+
+        // Source node does not want any incoming connections
+//        multiplicities[0] = new mxMultiplicity(false, "Sensor", null, null, 0,
+//                "0", null, "Sensor must have no inputs", null, true); // Type does not matter
+
+//        // Target needs exactly one incoming connection from Source
+//        multiplicities[2] = new mxMultiplicity(false, "Target", null, null, 1,
+//                "1", Arrays.asList(new String[] { "Source" }),
+//                "Target Must Have 1 Source", "Target Must Connect From Source",
+//                true);
+
+        graph.setMultiplicities(multiplicities);
+
+        final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        graph.setMultigraph(false);
+        graph.setAllowDanglingEdges(false);
+        graphComponent.setConnectable(true);
+        graphComponent.setToolTips(true);
+
+        // Enables rubberband selection
+        new mxRubberband(graphComponent);
+        new mxKeyboardHandler(graphComponent);
+
+        // Installs automatic validation (use editor.validation = true
+        // if you are using an mxEditor instance)
+        graph.getModel().addListener(mxEvent.CHANGE, new mxIEventListener()
+        {
+            public void invoke(Object sender, mxEventObject evt)
+            {
+                graphComponent.validateGraph();
+            }
+        });
+
+        // Initial validation
+        graphComponent.validateGraph();
     }
 
     /**
@@ -388,7 +475,7 @@ public class GraphEditor extends BasicGraphEditor {
                                                            // CONNECTION DOESN'T
                                                            // HAVE AND END!
 
-            // Loads the defalt stylesheet from an external file
+            // Loads the default stylesheet from an external file
             mxCodec codec = new mxCodec();
             Document doc = mxUtils.loadDocument(GraphEditor.class.getResource(
                     "/edu/incense/designer/resources/default-style.xml")
@@ -398,6 +485,9 @@ public class GraphEditor extends BasicGraphEditor {
             // Sets the background to white
             getViewport().setOpaque(true);
             getViewport().setBackground(Color.WHITE);
+            
+            mxCodecRegistry.addPackage("edu.incese.designer.task");
+            mxCodecRegistry.register(new mxCellCodec(new edu.incense.designer.task.Output()));
         }
 
         /**
@@ -460,7 +550,7 @@ public class GraphEditor extends BasicGraphEditor {
 
         Question question = new Question();
         question.setQuestion("How are you feeling right now?");
-        question.setType(QuestionType.SEEKBAR);
+        question.setType(QuestionType.SEEKBAR.toString());
         question.setSkippable(false);
         String[] options = { "Bad", "Good" };
         question.setOptions(options);
@@ -470,7 +560,7 @@ public class GraphEditor extends BasicGraphEditor {
 
         question = new Question();
         question.setQuestion("What are you doing right now?");
-        question.setType(QuestionType.OPENTEXT);
+        question.setType(QuestionType.OPENTEXT.toString());
         question.setSkippable(false);
         int[] nextQuestions2 = { 2 };
         question.setNextQuestions(nextQuestions2);
@@ -478,7 +568,7 @@ public class GraphEditor extends BasicGraphEditor {
 
         question = new Question();
         question.setQuestion("Are you thinking about something other than what you’re currently doing?");
-        question.setType(QuestionType.RADIOBUTTONS);
+        question.setType(QuestionType.RADIOBUTTONS.toString());
         question.setSkippable(false);
         String[] options2 = { "No", "Yes, something pleasant",
                 "Yes, something neutral", "Yes, something unpleasant" };

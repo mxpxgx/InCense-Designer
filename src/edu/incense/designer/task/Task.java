@@ -21,7 +21,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class Task implements Serializable {
     private static final long serialVersionUID = -2705547375579083074L;
     private static final String TAG = "Task";
-    private TaskType taskType = null;
+    private String type = null;
     private String name = "Untitled";
     private String description = null;
     private Map<String, String> extras;
@@ -32,12 +32,12 @@ public class Task implements Serializable {
         outputs = new HashMap<String, Output>();
     }
 
-    public Task(TaskType taskType) {
+    public Task(String type) {
         this();
-        this.taskType = taskType;
+        this.type = type;
     }
 
-    public Task(TaskType taskType, String name) {
+    public Task(String taskType, String name) {
         this(taskType);
         this.name = name;
     }
@@ -64,12 +64,15 @@ public class Task implements Serializable {
         return description;
     }
 
-    public void setTaskType(TaskType taskType) {
-        this.taskType = taskType;
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getType() {
+        return type;
     }
 
     public TaskType getTaskType() {
-        return taskType;
+        return TaskType.valueOf(type);
     }
 
     @Override
@@ -96,8 +99,28 @@ public class Task implements Serializable {
             return prefix+name.substring(0, 7)+".";
         }
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        String type = this.type;
+        if(type.toLowerCase().endsWith("filter")){
+            type = "Filter";
+        }
+        
+        if (obj instanceof Task){
+            String str = ((Task)obj).getType();
+             if(str.toLowerCase().endsWith("filter")){
+                 obj = "Filter";
+             } else {
+                 obj = str;
+             }
+        }
+        
+        return type.equals(obj);
+    }
 
     /* EXTRAS METHODS */
+
 
     public void setExtras(Map<String, String> extras) {
         this.extras = extras;
@@ -175,7 +198,7 @@ public class Task implements Serializable {
         outputs.put(key, value);
     }
 
-    public Output getOutput(String key) {
+    public Output obtainOutput(String key) {
         return outputs.get(key);
     }
 

@@ -2,6 +2,7 @@ package edu.incense.designer.task.survey;
 
 import java.io.Serializable;
 
+
 public class Question implements Serializable, Cloneable {
     private static final long serialVersionUID = 3311962415192464801L;
     public final static int MAX_OPTIONS = 5; // Maximum number of answers
@@ -9,7 +10,7 @@ public class Question implements Serializable, Cloneable {
     private String[] options; // all possible answers
     private int[] nextQuestions; // position of the next question, based on the
                                  // selected option
-    private QuestionType type;
+    private String type;
     private boolean skippable;
 
     public Question() {
@@ -34,11 +35,15 @@ public class Question implements Serializable, Cloneable {
         this.options = options;
     }
 
-    public QuestionType getType() {
+    public String getType() {
         return type;
     }
+    
+    public QuestionType obtainQuestionType() {
+        return QuestionType.valueOf(type);
+    }
 
-    public void setType(QuestionType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

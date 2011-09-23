@@ -17,6 +17,11 @@ public class Output implements Serializable {
     private String example;
     private String[] types;
     
+    public Output(){
+        setName(null);
+        setType(null);
+    }
+    
     public Output(String name, String type){
         setName(name);
         setType(type);

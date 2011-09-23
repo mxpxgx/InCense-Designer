@@ -108,10 +108,10 @@ public class QuestionEditorPanel extends JPanel{
                 String[] options = new String[optionsList.size()];
                 options = optionsList.toArray(options);
                 question.setQuestion(questionTextField.getText());
-                question.setType((QuestionType) typeComboBox.getSelectedItem());
+                question.setType(typeComboBox.getSelectedItem().toString());
                 question.setSkippable(skipCheckBox.isSelected());
-                if (question.getType() == QuestionType.CHECKBOXES
-                        || question.getType() == QuestionType.RADIOBUTTONS) {
+                if (question.obtainQuestionType() == QuestionType.CHECKBOXES
+                        || question.obtainQuestionType() == QuestionType.RADIOBUTTONS) {
                     question.setOptions(options);
                 } else {
                     question.setOptions(null);

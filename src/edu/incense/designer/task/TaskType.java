@@ -19,6 +19,7 @@ public enum TaskType {
     HomeLocationFilter,
     LocationFilter,
     CustomizableFilter,
+    Filter,
     Survey,
     Trigger,
     Sink,

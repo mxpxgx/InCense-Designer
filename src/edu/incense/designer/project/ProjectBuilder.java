@@ -12,7 +12,6 @@ import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 import edu.incense.designer.editor.BasicGraphEditor;
-import edu.incense.designer.project.Session.RepeatType;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskRelation;
 import edu.incense.designer.task.TaskType;
@@ -118,7 +117,7 @@ public class ProjectBuilder {
         
         String repeatType = task.getExtra(SessionEditorPanel.ATT_DURATION_MEASURE, "minutes");
         repeatType = measure.toUpperCase();
-        session.setRepeatType(RepeatType.valueOf(repeatType));
+        session.setRepeatType(repeatType);
         
         //Tasks and relations TODO
 //        session.setTasks(tasks)

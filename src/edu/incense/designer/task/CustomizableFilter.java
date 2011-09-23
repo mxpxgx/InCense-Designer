@@ -15,7 +15,7 @@ public class CustomizableFilter extends Task {
      * @param userCode
      */
     public CustomizableFilter() {
-        setTaskType(TaskType.CustomizableFilter);
+        setType(TaskType.CustomizableFilter.toString());
     }
 
     /**

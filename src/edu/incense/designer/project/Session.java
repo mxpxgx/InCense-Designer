@@ -13,7 +13,7 @@ public class Session {
     private long startDate; // The date when this session will be executed for
                             // the first time
     private long endDate; // If it's repeating, the date it will stop repeating.
-    private RepeatType repeatType; // Type of repeating units (eg. Hours)
+    private String type; // Type of repeating units (eg. Hours)
     private int repeatUnits; // The repeating units length (eg. 8)
                              // If repeatType = hours and repeatUnits = 8, then
                              // this session will repeat every 8 hours
@@ -94,15 +94,22 @@ public class Session {
     /**
      * @param repeatType the repeatType to set
      */
-    public void setRepeatType(RepeatType repeatType) {
-        this.repeatType = repeatType;
+    public void setRepeatType(String type) {
+        this.type = type;
     }
 
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+    
     /**
      * @return the repeatType
      */
     public RepeatType getRepeatType() {
-        return repeatType;
+        return RepeatType.valueOf(type);
     }
 
     /**

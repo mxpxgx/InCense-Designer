@@ -62,7 +62,7 @@ public class SurveyEditorPanel extends TaskEditorPanel {
         GroupLayout.Group hRightGroup = layout.createParallelGroup();
 
         JLabel typeLabel = new JLabel(mxResources.get("taskType") + ":");
-        JLabel typeValue = new JLabel(task.getTaskType().toString());
+        JLabel typeValue = new JLabel(task.getType());
 
         vGroup.addGroup(layout.createParallelGroup().addComponent(typeLabel)
                 .addComponent(typeValue));

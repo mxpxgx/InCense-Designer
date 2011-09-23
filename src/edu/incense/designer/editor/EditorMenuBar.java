@@ -28,7 +28,6 @@ import edu.incense.designer.editor.EditorActions.PrintAction;
 import edu.incense.designer.editor.EditorActions.PromptValueAction;
 import edu.incense.designer.editor.EditorActions.SaveAction;
 import edu.incense.designer.editor.EditorActions.ScaleAction;
-import edu.incense.designer.editor.EditorActions.SendAction;
 import edu.incense.designer.editor.EditorActions.SetLabelPositionAction;
 import edu.incense.designer.editor.EditorActions.SetStyleAction;
 import edu.incense.designer.editor.EditorActions.StyleAction;
@@ -37,6 +36,7 @@ import edu.incense.designer.editor.EditorActions.ToggleGridItem;
 import edu.incense.designer.editor.EditorActions.TogglePropertyItem;
 import edu.incense.designer.editor.EditorActions.ToggleRulersItem;
 import edu.incense.designer.editor.EditorActions.ZoomPolicyAction;
+import edu.incense.designer.editor.InCenseEditorActions.SendAction;
 
 public class EditorMenuBar extends JMenuBar {
 

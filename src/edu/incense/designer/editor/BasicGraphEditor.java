@@ -153,7 +153,7 @@ public class BasicGraphEditor extends JPanel {
         graphOutline = new mxGraphOutline(graphComponent);
         
         // Create properties view panel
-        properties = new PropertiesPanel(new Task(TaskType.Session));
+        properties = new PropertiesPanel(new Task(TaskType.Session.toString()));
 
         // Creates the library pane that contains the tabs with the palettes
 //        libraryPane = new JTabbedPane();
