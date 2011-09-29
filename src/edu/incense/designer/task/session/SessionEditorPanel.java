@@ -26,6 +26,7 @@ import com.mxgraph.view.mxGraph;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
 
+import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskCellEditor;
 import edu.incense.designer.task.TaskEditorPanel;
@@ -61,7 +62,7 @@ public class SessionEditorPanel extends TaskEditorPanel {
     private JDateChooser endChooser;
     private JComboBox repeatBox;
 
-    public SessionEditorPanel(Window windowContainer, Task task,
+    public SessionEditorPanel(Window windowContainer, EditorTask task,
             TaskCellEditor editor, mxGraph graph, mxICell cell) {
         super(windowContainer, task, editor);
 //        this.graph = graph;
@@ -70,7 +71,7 @@ public class SessionEditorPanel extends TaskEditorPanel {
         addComponents(task, (mxCell) cell);
     }
 
-    protected void addComponents(final Task task, mxCell cell) {
+    protected void addComponents(final EditorTask task, mxCell cell) {
         final Map<String, String> extras = task.getExtras();
 
         GroupLayout layout = new GroupLayout(this);
@@ -344,7 +345,7 @@ public class SessionEditorPanel extends TaskEditorPanel {
 //        return data;
 //    }
 
-    private void saveTrigger(Task task, String name) {
+    private void saveTrigger(EditorTask task, String name) {
         task.setName(name);
 
 //        ObjectMapper mapper = new ObjectMapper();

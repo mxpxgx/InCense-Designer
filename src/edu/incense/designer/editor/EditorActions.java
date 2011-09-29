@@ -722,29 +722,30 @@ public class EditorActions
                    String ext = filename
                            .substring(filename.lastIndexOf('.') + 1);
 
-                   if (ext.equalsIgnoreCase("svg"))
-                   {
-                       mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer
-                               .drawCells(graph, null, 1, null,
-                                       new CanvasFactory()
-                                       {
-                                           public mxICanvas createCanvas(
-                                                   int width, int height)
-                                           {
-                                               mxSvgCanvas canvas = new mxSvgCanvas(
-                                                       mxUtils.createSvgDocument(
-                                                               width, height));
-                                               canvas.setEmbedded(true);
-
-                                               return canvas;
-                                           }
-
-                                       });
-
-                       mxUtils.writeFile(mxUtils.getXml(canvas.getDocument()),
-                               filename);
-                   }
-                   else if (selectedFilter == vmlFileFilter)
+//                   if (ext.equalsIgnoreCase("svg"))
+//                   {
+//                       mxSvgCanvas canvas = (mxSvgCanvas) mxCellRenderer
+//                               .drawCells(graph, null, 1, null,
+//                                       new CanvasFactory()
+//                                       {
+//                                           public mxICanvas createCanvas(
+//                                                   int width, int height)
+//                                           {
+//                                               mxSvgCanvas canvas = new mxSvgCanvas(
+//                                                       mxUtils.createSvgDocument(
+//                                                               width, height));
+//                                               canvas.setEmbedded(true);
+//
+//                                               return canvas;
+//                                           }
+//
+//                                       });
+//
+//                       mxUtils.writeFile(mxUtils.getXml(canvas.getDocument()),
+//                               filename);
+//                   }
+//                   else
+                   if (selectedFilter == vmlFileFilter)
                    {
                        mxUtils.writeFile(mxUtils.getXml(mxCellRenderer
                                .createVmlDocument(graph, null, 1, null, null)
@@ -1716,40 +1717,40 @@ public class EditorActions
 						JFileChooser fc = new JFileChooser(wd);
 
 						// Adds file filter for supported file format
-						DefaultFileFilter defaultFilter = new DefaultFileFilter(
-								".mxe", mxResources.get("allSupportedFormats")
-										+ " (.mxe, .png, .vdx)")
-						{
-
-							public boolean accept(File file)
-							{
-								String lcase = file.getName().toLowerCase();
-
-								return super.accept(file)
-										|| lcase.endsWith(".png")
-										|| lcase.endsWith(".vdx");
-							}
-						};
-						fc.addChoosableFileFilter(defaultFilter);
+//						DefaultFileFilter defaultFilter = new DefaultFileFilter(
+//								".mxe", mxResources.get("allSupportedFormats")
+//										+ " (.mxe, .png, .vdx)")
+//						{
+//
+//							public boolean accept(File file)
+//							{
+//								String lcase = file.getName().toLowerCase();
+//
+//								return super.accept(file)
+//										|| lcase.endsWith(".png")
+//										|| lcase.endsWith(".vdx");
+//							}
+//						};
+						//fc.addChoosableFileFilter(defaultFilter);
 
 						fc.addChoosableFileFilter(new DefaultFileFilter(".mxe",
 								"mxGraph Editor " + mxResources.get("file")
 										+ " (.mxe)"));
-						fc.addChoosableFileFilter(new DefaultFileFilter(".png",
-								"PNG+XML  " + mxResources.get("file")
-										+ " (.png)"));
+//						fc.addChoosableFileFilter(new DefaultFileFilter(".png",
+//								"PNG+XML  " + mxResources.get("file")
+//										+ " (.png)"));
 
 						// Adds file filter for VDX import
-						fc.addChoosableFileFilter(new DefaultFileFilter(".vdx",
-								"XML Drawing  " + mxResources.get("file")
-										+ " (.vdx)"));
+//						fc.addChoosableFileFilter(new DefaultFileFilter(".vdx",
+//								"XML Drawing  " + mxResources.get("file")
+//										+ " (.vdx)"));
 
 						// Adds file filter for GD import
-						fc.addChoosableFileFilter(new DefaultFileFilter(".txt",
-								"Graph Drawing  " + mxResources.get("file")
-										+ " (.txt)"));
+//						fc.addChoosableFileFilter(new DefaultFileFilter(".txt",
+//								"Graph Drawing  " + mxResources.get("file")
+//										+ " (.txt)"));
 
-						fc.setFileFilter(defaultFilter);
+//						fc.setFileFilter(defaultFilter);
 
 						int rc = fc.showDialog(null,
 								mxResources.get("openFile"));

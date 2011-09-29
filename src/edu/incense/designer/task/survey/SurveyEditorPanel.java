@@ -26,7 +26,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.mxgraph.util.mxResources;
 
 import edu.incense.designer.GraphEditor;
-import edu.incense.designer.task.Task;
+import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.TaskCellEditor;
 import edu.incense.designer.task.TaskEditorPanel;
 
@@ -39,12 +39,12 @@ public class SurveyEditorPanel extends TaskEditorPanel {
     private DynamicList<Question> dynamicList;
     private QuestionEditor questionEditor;
 
-    public SurveyEditorPanel(Window windowContainer, Task task,
+    public SurveyEditorPanel(Window windowContainer, EditorTask task,
             TaskCellEditor editor) {
         super(windowContainer, task, editor);
     }
 
-    protected void addComponents(final Task task) {
+    protected void addComponents(final EditorTask task) {
         this.task = task;
         
         JsonSurvey jsonSurvey = new JsonSurvey(new ObjectMapper());

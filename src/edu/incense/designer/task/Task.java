@@ -23,13 +23,10 @@ public class Task implements Serializable {
     private static final String TAG = "Task";
     private String type = null;
     private String name = "Untitled";
-    private String description = null;
     private Map<String, String> extras;
-    private Map<String, Output> outputs;
 
     public Task() {
         extras = new HashMap<String, String>();
-        outputs = new HashMap<String, Output>();
     }
 
     public Task(String type) {
@@ -41,6 +38,14 @@ public class Task implements Serializable {
         this(taskType);
         this.name = name;
     }
+    
+    public static Task valueOf(EditorTask etask){
+        Task task = new Task();
+        task.setName(etask.getName());
+        task.setType(etask.getType());
+        task.setExtras(etask.getExtras());
+        return task;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -48,20 +53,6 @@ public class Task implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
     }
 
     public void setType(String type) {
@@ -175,31 +166,6 @@ public class Task implements Serializable {
     
     public long getExtra(String key, long defValue) {
         return Long.parseLong(getExtra(key, String.valueOf(defValue)));
-    }
-
-    /* OUTPUTS METHODS */
-
-    public void setOutputs(Map<String, Output> outputs) {
-        this.outputs = outputs;
-    }
-
-    public Map<String, Output> getOutputs() {
-        return outputs;
-    }
-
-    public void putOutput(String key, String value, String description, String example) {
-        Output output = new Output(key, value);
-        output.setDescription(description);
-        output.setExample(example);
-        outputs.put(key, output);
-    }
-    
-    public void putOutput(String key, Output value) {
-        outputs.put(key, value);
-    }
-
-    public Output obtainOutput(String key) {
-        return outputs.get(key);
     }
 
     /* JSON METHODS */

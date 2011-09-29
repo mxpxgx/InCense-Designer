@@ -39,6 +39,7 @@
 		<add as="fontStyle" value="1"/>
 		<add as="startSize" value="23"/>
         <add as="resizable" value="1"/>
+		<add as="fillColor" value="white"/>
 	</add>
 	<add as="group">
 		<add as="verticalAlign" value="top"/>

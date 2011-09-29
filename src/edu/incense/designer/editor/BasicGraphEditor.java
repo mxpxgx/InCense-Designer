@@ -58,7 +58,7 @@ import com.mxgraph.util.mxUndoableEdit;
 import com.mxgraph.util.mxUndoableEdit.mxUndoableChange;
 import com.mxgraph.view.mxGraph;
 
-import edu.incense.designer.task.Task;
+import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.TaskType;
 
 /**
@@ -153,7 +153,7 @@ public class BasicGraphEditor extends JPanel {
         graphOutline = new mxGraphOutline(graphComponent);
         
         // Create properties view panel
-        properties = new PropertiesPanel(new Task(TaskType.Session.toString()));
+        properties = new PropertiesPanel(new EditorTask(TaskType.Session.toString()));
 
         // Creates the library pane that contains the tabs with the palettes
 //        libraryPane = new JTabbedPane();
@@ -624,7 +624,6 @@ public class BasicGraphEditor extends JPanel {
             about.setVisible(true);
         }
     }
-    
 
 
     /**

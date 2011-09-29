@@ -37,6 +37,7 @@ import com.mxgraph.util.mxResources;
 import com.mxgraph.view.mxGraph;
 
 import edu.incense.designer.GraphEditor;
+import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.Output;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskCellEditor;
@@ -54,7 +55,7 @@ public class TriggerEditorPanel extends TaskEditorPanel {
     private mxGraph graph;
     private String matches;
 
-    public TriggerEditorPanel(Window windowContainer, Task task,
+    public TriggerEditorPanel(Window windowContainer, EditorTask task,
             TaskCellEditor editor, mxGraph graph, mxICell cell) {
         super(windowContainer, task, editor);
         this.graph = graph;
@@ -63,7 +64,7 @@ public class TriggerEditorPanel extends TaskEditorPanel {
         addComponents(task, (mxCell) cell);
     }
 
-    protected void addComponents(final Task task, mxCell cell) {
+    protected void addComponents(final EditorTask task, mxCell cell) {
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -217,10 +218,10 @@ public class TriggerEditorPanel extends TaskEditorPanel {
             return data;
         }
         mxCell source;
-        Task task;
+        EditorTask task;
         for (int i = 0; i < edges.length; i++) {
             source = (mxCell) ((mxCell) edges[i]).getSource();
-            task = (Task) source.getValue();
+            task = (EditorTask) source.getValue();
             System.out.println("Found outputs:" + task.getOutputs().size());
             data.putAll(task.getOutputs());
             data.putAll(getDataAvailableFor(source));
@@ -231,7 +232,7 @@ public class TriggerEditorPanel extends TaskEditorPanel {
     private final static String CONDITIONS = "conditions";
     private final static String MATCHES = "matches";
 
-    private void saveTrigger(Task task, String name, List<Condition> conditions) {
+    private void saveTrigger(EditorTask task, String name, List<Condition> conditions) {
         task.setName(name);
 
         ObjectMapper mapper = new ObjectMapper();

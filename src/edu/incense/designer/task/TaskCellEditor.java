@@ -34,7 +34,7 @@ public class TaskCellEditor implements mxICellEditor {
     private mxCellState state;
     private mxICell cell;
     private mxGraph graph;
-    private Task task;
+    private EditorTask task;
 
     /**
      * 
@@ -44,7 +44,7 @@ public class TaskCellEditor implements mxICellEditor {
 
     }
 
-    public void saveNewTask(Task task) {
+    public void saveNewTask(EditorTask task) {
         // TODO implement saving
         this.task = task;
         // graph.getModel().beginUpdate();
@@ -72,7 +72,7 @@ public class TaskCellEditor implements mxICellEditor {
 
             cell = (mxICell) cellObject;
             if (cell.isVertex()) {
-                Task task = (Task) cell.getValue();
+                EditorTask task = (EditorTask) cell.getValue();
 
                 if (task != null) {
                     JFrame parentFrame = (JFrame) SwingUtilities

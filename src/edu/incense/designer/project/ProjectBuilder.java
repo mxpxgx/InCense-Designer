@@ -98,7 +98,7 @@ public class ProjectBuilder {
         } else if(measure.compareTo("hours") == 0){
             duration = units * 1000L * 60 * 60; //milliseconds
         }
-        session.setDuration(duration);
+//        session.setDurationMeasure(duration);
         
         //Start date
         long startDate = task.getExtra(SessionEditorPanel.ATT_START, 0L);
@@ -117,7 +117,7 @@ public class ProjectBuilder {
         
         String repeatType = task.getExtra(SessionEditorPanel.ATT_DURATION_MEASURE, "minutes");
         repeatType = measure.toUpperCase();
-        session.setRepeatType(repeatType);
+        session.setRepeatMeasure(repeatType);
         
         //Tasks and relations TODO
 //        session.setTasks(tasks)

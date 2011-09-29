@@ -6,23 +6,40 @@ import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskRelation;
 
 public class Session {
+    private String name;
     private List<Task> tasks;
     private List<TaskRelation> relations;
-    private long duration; // Time length of recording session
+    private String durationMeasure; // Time length of recording session
+    private long durationUnits; // Time length of recording session
     private boolean autoTriggered; // automatically triggered
     private long startDate; // The date when this session will be executed for
                             // the first time
     private long endDate; // If it's repeating, the date it will stop repeating.
-    private String type; // Type of repeating units (eg. Hours)
+    private String repeatMeasure; // Type of repeating units (eg. Hours)
     private int repeatUnits; // The repeating units length (eg. 8)
                              // If repeatType = hours and repeatUnits = 8, then
                              // this session will repeat every 8 hours
     private boolean repeat;
     private boolean notices;
+    private String sessionType;
 
     public enum RepeatType {
         NOT_REPEATABLE, MINUTES, HOURS, DAYS, WEEKS, MONTHS
     };
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
     public List<Task> getTasks() {
         return tasks;
@@ -40,12 +57,20 @@ public class Session {
         this.relations = relations;
     }
 
-    public void setDuration(long duration) {
-        this.duration = duration;
+    public void setDurationMeasure(String durationMeasure) {
+        this.durationMeasure = durationMeasure;
     }
 
-    public long getDuration() {
-        return duration;
+    public String getDurationMeasure() {
+        return durationMeasure;
+    }
+    
+    public void setDurationUnits(long durationUnits) {
+        this.durationUnits = durationUnits;
+    }
+    
+    public long getDurationUnits() {
+        return durationUnits;
     }
 
     /**
@@ -94,22 +119,15 @@ public class Session {
     /**
      * @param repeatType the repeatType to set
      */
-    public void setRepeatType(String type) {
-        this.type = type;
+    public void setRepeatMeasure(String repeatMeasure) {
+        this.repeatMeasure = repeatMeasure;
     }
 
     /**
      * @return the type
      */
-    public String getType() {
-        return type;
-    }
-    
-    /**
-     * @return the repeatType
-     */
-    public RepeatType getRepeatType() {
-        return RepeatType.valueOf(type);
+    public String getRepeatMeasure() {
+        return repeatMeasure;
     }
 
     /**
@@ -136,8 +154,8 @@ public class Session {
     /**
      * @param repeat the repeat to set
      */
-    public void setRepeat(boolean repeat) {
-        this.repeat = repeat;
+    public void setRepeat(boolean repeatType) {
+        this.repeat = repeatType;
     }
 
     /**
@@ -152,6 +170,20 @@ public class Session {
      */
     public void setNotices(boolean notices) {
         this.notices = notices;
+    }
+
+    /**
+     * @param sessionType the sessionType to set
+     */
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
+    }
+
+    /**
+     * @return the sessionType
+     */
+    public String getSessionType() {
+        return sessionType;
     }
 
 }

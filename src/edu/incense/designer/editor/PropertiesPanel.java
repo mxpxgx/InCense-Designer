@@ -14,6 +14,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.Output;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskType;
@@ -40,13 +41,13 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
     private GroupLayout.Group hGroup;
     private GroupLayout.Group vGroup;
 
-    public PropertiesPanel(Task task) {
+    public PropertiesPanel(EditorTask task) {
         setBackground(new Color(245,245,245));
         setTask(task);
         instantiated = true;
     }
 
-    public void setTask(Task task) {
+    public void setTask(EditorTask task) {
         if (instantiated) {
             this.removeAll();
         }
@@ -160,7 +161,7 @@ public class PropertiesPanel extends JPanel implements PaletteSelectionListener 
      */
     @Override
     public void selectionChanged(Object value) {
-        Task task = (Task) value;
+        EditorTask task = (EditorTask) value;
         setTask(task);
     }
 

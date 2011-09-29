@@ -51,7 +51,7 @@ public class SinkEditorPanel extends TaskEditorPanel {
     private static final String[] FILE_FORMATS = { "JSON", "XML", "CVS" };
     private Map<String, JCheckBox> checkList;
 
-    public SinkEditorPanel(Window windowContainer, Task task,
+    public SinkEditorPanel(Window windowContainer, EditorTask task,
             TaskCellEditor editor, mxGraph graph, mxICell cell) {
         super(windowContainer, task, editor);
         this.graph = graph;
@@ -60,11 +60,11 @@ public class SinkEditorPanel extends TaskEditorPanel {
     }
 
     @Override
-    protected void addComponents(final Task task) {
+    protected void addComponents(final EditorTask task) {
 
     }
 
-    protected void addComponents(final Task task, mxCell cell) {
+    protected void addComponents(final EditorTask task, mxCell cell) {
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         layout.setAutoCreateGaps(true);
@@ -241,10 +241,10 @@ public class SinkEditorPanel extends TaskEditorPanel {
             return data;
         }
         mxCell source;
-        Task task;
+        EditorTask task;
         for (int i = 0; i < edges.length; i++) {
             source = (mxCell) ((mxCell) edges[i]).getSource();
-            task = (Task) source.getValue();
+            task = (EditorTask) source.getValue();
             data.putAll(task.getOutputs());
             data.putAll(getDataAvailableFor(source));
         }
@@ -280,7 +280,7 @@ public class SinkEditorPanel extends TaskEditorPanel {
         return stringList;
     }
 
-    private void saveSink(Task task, String name, String format,
+    private void saveSink(EditorTask task, String name, String format,
             String[] selectedData) {
         task.setName(name);
         task.putExtra(ATT_SELECTED_FORMAT, format);

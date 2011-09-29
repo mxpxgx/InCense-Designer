@@ -25,11 +25,11 @@ import com.mxgraph.util.mxResources;
  */
 public class TaskEditorPanel extends JPanel {
     private static final long serialVersionUID = 7340943810863690202L;
-    protected Task task;
+    protected EditorTask task;
     protected TaskCellEditor editor;
     protected Window windowContainer;
 
-    public TaskEditorPanel(Window windowContainer, Task task, TaskCellEditor editor) {
+    public TaskEditorPanel(Window windowContainer, EditorTask task, TaskCellEditor editor) {
         this.editor = editor;
         this.windowContainer = windowContainer;
 
@@ -39,7 +39,7 @@ public class TaskEditorPanel extends JPanel {
     /**
      * @return the task
      */
-    private Task getTask() {
+    private EditorTask getTask() {
         return task;
     }
 
@@ -48,7 +48,7 @@ public class TaskEditorPanel extends JPanel {
      * 
      * @param task
      */
-    protected void addComponents(Task task) {
+    protected void addComponents(EditorTask task) {
         this.task = task;
 
         final Map<String, String> extras = task.getExtras();
@@ -112,7 +112,7 @@ public class TaskEditorPanel extends JPanel {
         okButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                Task task = getTask();
+                EditorTask task = getTask();
                 if (task.getTaskType() != TaskType.Sensor) {
                     task.setName(nameTextField.getText());
                 }
