@@ -7,12 +7,7 @@ import java.awt.Component;
 import java.awt.Dialog.ModalityType;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,19 +22,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
-import com.mxgraph.model.mxIGraphModel;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.util.mxResources;
 import com.mxgraph.view.mxGraph;
@@ -51,7 +38,6 @@ import edu.incense.designer.project.Session;
 import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskRelation;
-import edu.incense.designer.task.TaskType;
 import edu.incense.designer.task.survey.JsonSurvey;
 import edu.incense.designer.task.survey.Survey;
 
@@ -96,7 +82,6 @@ public class InCenseEditorActions {
             if (editor != null) {
                 mxGraphComponent graphComponent = editor.getGraphComponent();
                 mxGraph graph = graphComponent.getGraph();
-                mxIGraphModel model = graph.getModel();
 
                 if (editor.getCurrentFile() == null) {
                     JOptionPane.showMessageDialog(graphComponent,
@@ -134,228 +119,22 @@ public class InCenseEditorActions {
             dialog.toFront();
         }
 
-        public String toString(File file) {
-            String ls = System.getProperty("line.separator");
-
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(file));
-
-                String line = null;
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    stringBuilder.append(line);
-                    stringBuilder.append(ls);
-                }
-                reader.close();
-                return stringBuilder.toString();
-
-            } catch (FileNotFoundException e) {
-                System.err.println(TAG + ": [" + file + "] file wasn't found. "
-                        + ls + e);
-                return null;
-            } catch (IOException e) {
-                System.err.println(TAG + ": [" + file
-                        + "] file line couldn't be read. " + ls + e);
-                return null;
-            }
-        }
-
-        private final static String ROOT_NODE = "root";
-        private final static String TASK_NODE = "edu.incense.designer.task.Task";
-        private final static String ATT_ID = "id";
-        private final static String ATT_TYPE = "type";
-        private final static String ATT_VERTEX = "vertex";
-        private final static String ATT_EDGE = "edge";
-        private final static String ATT_ARRAY = "Array";
-        private final static String ATT_ADD = "add";
-        private final static String ATT_AS = "as";
-        private final static String ATT_VALUE = "value";
-        private ObjectMapper mapper;
-
-        public String formatToInCenseJson(String json) {
-            mapper = new ObjectMapper();
-            List<JsonNode> nodes = null;
-            try {
-                JsonNode node = mapper.readTree(json);
-                nodes = mapper.readValue(node.findValue(ROOT_NODE),
-                        new TypeReference<List<JsonNode>>() {
-                        });
-            } catch (JsonProcessingException e) {
-                System.err.println(getClass().getName()
-                        + ": Parsing JSON file failed, " + e);
-                return null;
-            } catch (IOException e) {
-                System.err.println(getClass().getName()
-                        + ": Parsing JSON file failed, " + e);
-                return null;
-            }
-
-            List<Session> sessions = new ArrayList<Session>();
-            Map<Integer, Task> tasks = new HashMap<Integer, Task>();
-            List<JsonNode> edges = new ArrayList<JsonNode>();
-
-            for (JsonNode node : nodes) {
-                // Get the id of this task in JGraph, this would be useful to
-                // create relations (edges) between tasks
-                int id = node.get(ATT_ID).getValueAsInt();
-
-                boolean vertex = node.get(ATT_VERTEX).getValueAsBoolean(false);
-                boolean edge = node.get(ATT_EDGE).getValueAsBoolean(false);
-
-                if (vertex) {
-                    JsonNode task = node.get(TASK_NODE);
-                    String type = task.get(ATT_TYPE).getValueAsText();
-                    switch (TaskType.valueOf(type)) {
-                    default:
-                        System.err.println("Unknown vertex/task type: \n"
-                                + task.getValueAsText());
-                        break;
-                    case Session:
-                        Session session = nodeToSession(task);
-                        sessions.add(session);
-                        // tasks.put(Integer.valueOf(task.get(ATT_ID).getValueAsInt()),
-                        // session);
-                        break;
-                    }
-                } else if (edge) {
-                    edges.add(node);
-                }
-            }
-
-            Project project = new Project();
-
-            // Check session have valid tasks
-
-            // Check every relation is valid
-            Map<Integer, TaskRelation> relations = new HashMap<Integer, TaskRelation>();
-
-            return "";
-        }
+        /* *** Working directly with Graph Model *** */
 
         private enum SessionAttributes {
             durationMeasure, durationUnits, autoTriggered, startDate, endDate, repeatMeasure, repeatUnits, repeat, notices, sessionType
         }
-
-        /**
-         * @param sn
-         *            (Session Node)
-         * @return
-         */
-        private Session nodeToSession(JsonNode sn) {
-            List<JsonNode> attributes = null;
-            try {
-                attributes = mapper.readValue(sn.get(ATT_ARRAY).get(ATT_ADD),
-                        new TypeReference<List<JsonNode>>() {
-                        });
-            } catch (JsonParseException e) {
-                System.err.println(getClass().getName()
-                        + ": Parsing JSON file failed, " + e);
-                return null;
-            } catch (JsonMappingException e) {
-                System.err.println(getClass().getName()
-                        + ": Parsing JSON file failed, " + e);
-                return null;
-            } catch (IOException e) {
-                System.err.println(getClass().getName()
-                        + ": Parsing JSON file failed, " + e);
-                return null;
-            }
-
-            Session s = new Session();
-            for (JsonNode a : attributes) {
-                String value = a.get(ATT_VALUE).getValueAsText();
-                String as = a.get(ATT_AS).getValueAsText();
-
-                switch (SessionAttributes.valueOf(as)) {
-                    case durationMeasure:
-                        s.setDurationMeasure(value);
-                        break;
-                    case autoTriggered:
-                        s.setAutoTriggered(Boolean.parseBoolean(value));
-                        break;
-                    case startDate:
-                        s.setStartDate(Long.parseLong(value));
-                        break;
-                    case endDate:
-                        s.setEndDate(Long.parseLong(value));
-                        break;
-                    case repeatMeasure:
-                        s.setRepeatMeasure(value);
-                        break;
-                    case repeatUnits:
-                        s.setRepeatUnits(Integer.parseInt(value));
-                        break;
-                    case repeat:
-                        s.setRepeat(Boolean.parseBoolean(value));
-                        break;
-                    case notices:
-                        s.setNotices(Boolean.parseBoolean(value));
-                        break;
-                }
-
-            }
-
-            return s;
-        }
-        
-        /* *** Working directly with Graph Model *** */
-        
-        private Session nodeToSession(Task t) {
-            Session s = new Session();
-            s.setName(t.getName());
-            Map<String, String> extras = t.getExtras();
-            for (Entry<String, String> entry : extras.entrySet()) {
-
-                switch (SessionAttributes.valueOf(entry.getKey())) {
-                    case durationMeasure:
-                        s.setDurationMeasure(entry.getValue());
-                        break;
-                    case durationUnits:
-                        s.setDurationUnits(Long.parseLong(entry.getValue()));
-                        break;
-                    case autoTriggered:
-                        s.setAutoTriggered(Boolean.parseBoolean(entry.getValue()));
-                        break;
-                    case startDate:
-                        s.setStartDate(Long.parseLong(entry.getValue()));
-                        break;
-                    case endDate:
-                        s.setEndDate(Long.parseLong(entry.getValue()));
-                        break;
-                    case repeatMeasure:
-                        s.setRepeatMeasure(entry.getValue());
-                        break;
-                    case repeatUnits:
-                        s.setRepeatUnits(Integer.parseInt(entry.getValue()));
-                        break;
-                    case repeat:
-                        s.setRepeat(Boolean.parseBoolean(entry.getValue()));
-                        break;
-                    case notices:
-                        s.setNotices(Boolean.parseBoolean(entry.getValue()));
-                        break;
-                    case sessionType:
-                        s.setSessionType(entry.getValue());
-                        break;
-                }
-            }
-            return s;
-        }
-        
         private List<Session> sessions;
         private List<Survey> surveys;
-//        private List<Task> tasks;
         private Map<String, String> verticesRegistry;
-//        private List<mxCell> edges;
         private mxGraph graph;
+        private ObjectMapper mapper;
         
         public void jgraphToInCense(mxGraph graph, File file){
             this.graph = graph;
             sessions = new ArrayList<Session>();
             surveys = new ArrayList<Survey>();
-//            tasks = new ArrayList<Task>();
             verticesRegistry = new HashMap<String, String>();
-//            edges = new ArrayList<mxCell>();
             
             Object[] vertices = graph.getChildCells(graph.getDefaultParent(), true, false);
             List<Task> tasks = processChildVertices(vertices);
@@ -409,11 +188,11 @@ public class InCenseEditorActions {
                 mapper = new ObjectMapper();
                 mapper.writeValue(jsonFile, project);
             } catch (JsonGenerationException e) {
-                System.err.println(e);
+                System.err.println(TAG+": "+e);
             } catch (JsonMappingException e) {
-                System.err.println(e);
+                System.err.println(TAG+": "+e);
             } catch (IOException e) {
-                System.err.println(e);
+                System.err.println(TAG+": "+e);
             }
             System.out.println("complete.");
         }
@@ -472,6 +251,47 @@ public class InCenseEditorActions {
             return relations;
         }
         
+        private Session nodeToSession(Task t) {
+            Session s = new Session();
+            s.setName(t.getName());
+            Map<String, String> extras = t.getExtras();
+            for (Entry<String, String> entry : extras.entrySet()) {
+
+                switch (SessionAttributes.valueOf(entry.getKey())) {
+                    case durationMeasure:
+                        s.setDurationMeasure(entry.getValue());
+                        break;
+                    case durationUnits:
+                        s.setDurationUnits(Long.parseLong(entry.getValue()));
+                        break;
+                    case autoTriggered:
+                        s.setAutoTriggered(Boolean.parseBoolean(entry.getValue()));
+                        break;
+                    case startDate:
+                        s.setStartDate(Long.parseLong(entry.getValue()));
+                        break;
+                    case endDate:
+                        s.setEndDate(Long.parseLong(entry.getValue()));
+                        break;
+                    case repeatMeasure:
+                        s.setRepeatMeasure(entry.getValue());
+                        break;
+                    case repeatUnits:
+                        s.setRepeatUnits(Integer.parseInt(entry.getValue()));
+                        break;
+                    case repeat:
+                        s.setRepeat(Boolean.parseBoolean(entry.getValue()));
+                        break;
+                    case notices:
+                        s.setNotices(Boolean.parseBoolean(entry.getValue()));
+                        break;
+                    case sessionType:
+                        s.setSessionType(entry.getValue());
+                        break;
+                }
+            }
+            return s;
+        }
         
         public boolean isRealParentOf(mxCell parent, mxCell child){
             return isRealParentOf(parent.getGeometry(), child.getGeometry());

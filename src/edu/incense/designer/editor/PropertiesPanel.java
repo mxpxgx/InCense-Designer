@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 
 import edu.incense.designer.task.EditorTask;
 import edu.incense.designer.task.Output;
-import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskType;
 
 /**

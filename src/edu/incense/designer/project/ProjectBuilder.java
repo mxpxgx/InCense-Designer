@@ -90,14 +90,14 @@ public class ProjectBuilder {
         session.setNotices(notices);  
         
         // Duration (in milliseconds)
-        long duration = 0;
-        int units = task.getExtra(SessionEditorPanel.ATT_DURATION_UNITS, 0);
+//        long duration = 0;
+//        int units = task.getExtra(SessionEditorPanel.ATT_DURATION_UNITS, 0);
         String measure = task.getExtra(SessionEditorPanel.ATT_DURATION_MEASURE, "minutes");
-        if(measure.compareTo("minutes") == 0){
-            duration = units * 1000L * 60; //milliseconds
-        } else if(measure.compareTo("hours") == 0){
-            duration = units * 1000L * 60 * 60; //milliseconds
-        }
+//        if(measure.compareTo("minutes") == 0){
+//            duration = units * 1000L * 60; //milliseconds
+//        } else if(measure.compareTo("hours") == 0){
+//            duration = units * 1000L * 60 * 60; //milliseconds
+//        }
 //        session.setDurationMeasure(duration);
         
         //Start date

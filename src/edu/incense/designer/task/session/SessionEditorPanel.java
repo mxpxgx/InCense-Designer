@@ -27,7 +27,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JSpinnerDateEditor;
 
 import edu.incense.designer.task.EditorTask;
-import edu.incense.designer.task.Task;
 import edu.incense.designer.task.TaskCellEditor;
 import edu.incense.designer.task.TaskEditorPanel;
 
